@@ -9,6 +9,8 @@ const allowedChannels = {
     'activity:resume',
     'activity:getTodayActivities',
     'activity:getFiltered',
+    'activity:getFilteredPaginated',
+    'activity:getRecent',
     'project:getAll',
     'project:create',
     'project:update',

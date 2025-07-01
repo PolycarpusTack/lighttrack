@@ -1,5 +1,36 @@
-import React from 'react';
-import { Pie, Line, Bar } from 'react-chartjs-2';
+import React, { Suspense } from 'react';
+
+// Lazy-loaded chart components
+const LazyPieChart = React.lazy(async () => {
+  const { Pie } = await import('react-chartjs-2');
+  return { default: Pie };
+});
+
+const LazyLineChart = React.lazy(async () => {
+  const { Line } = await import('react-chartjs-2');
+  return { default: Line };
+});
+
+const LazyBarChart = React.lazy(async () => {
+  const { Bar } = await import('react-chartjs-2');
+  return { default: Bar };
+});
+
+// Chart loading skeleton
+const ChartSkeleton: React.FC = () => (
+  <div style={{ 
+    height: '200px', 
+    background: '#f5f5f5', 
+    borderRadius: '4px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '14px',
+    color: '#666'
+  }}>
+    Loading chart...
+  </div>
+);
 import { formatDuration, formatDate } from '../../utils/timeFormatters';
 import styles from './ReportPreview.module.css';
 
@@ -13,11 +44,23 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({ report, onClose, onExport
   const renderChart = (chart: any) => {
     switch (chart.type) {
       case 'pie':
-        return <Pie data={chart.data} options={{ responsive: true, maintainAspectRatio: false }} />;
+        return (
+          <Suspense fallback={<ChartSkeleton />}>
+            <LazyPieChart data={chart.data} options={{ responsive: true, maintainAspectRatio: false }} />
+          </Suspense>
+        );
       case 'line':
-        return <Line data={chart.data} options={{ responsive: true, maintainAspectRatio: false }} />;
+        return (
+          <Suspense fallback={<ChartSkeleton />}>
+            <LazyLineChart data={chart.data} options={{ responsive: true, maintainAspectRatio: false }} />
+          </Suspense>
+        );
       case 'bar':
-        return <Bar data={chart.data} options={{ responsive: true, maintainAspectRatio: false }} />;
+        return (
+          <Suspense fallback={<ChartSkeleton />}>
+            <LazyBarChart data={chart.data} options={{ responsive: true, maintainAspectRatio: false }} />
+          </Suspense>
+        );
       case 'calendar':
         return renderCalendarChart(chart.data);
       default:

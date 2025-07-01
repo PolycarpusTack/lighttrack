@@ -1,8 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../store';
-import { Pie, Line, Bar } from 'react-chartjs-2';
+
+// Lazy-loaded chart components
+const LazyPieChart = React.lazy(async () => {
+  const { Pie } = await import('react-chartjs-2');
+  return { default: Pie };
+});
+
+const LazyLineChart = React.lazy(async () => {
+  const { Line } = await import('react-chartjs-2');
+  return { default: Line };
+});
+
+const LazyBarChart = React.lazy(async () => {
+  const { Bar } = await import('react-chartjs-2');
+  return { default: Bar };
+});
+
+// Simple chart loading skeleton
+const ChartSkeleton: React.FC = () => (
+  <div style={{ 
+    height: '100%', 
+    background: '#f0f0f0', 
+    borderRadius: '8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    animation: 'pulse 1.5s infinite'
+  }}>
+    Loading chart...
+  </div>
+);
 import {
   fetchProjectStats,
   fetchProjectTrends,
@@ -243,7 +273,9 @@ const ProjectAnalytics: React.FC = () => {
           </div>
         </div>
         <div className={styles.chartContainer}>
-          <Line data={chartData} options={chartOptions} />
+          <Suspense fallback={<ChartSkeleton />}>
+            <LazyLineChart data={chartData} options={chartOptions} />
+          </Suspense>
         </div>
       </div>
     );

@@ -1,17 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Pie, Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-} from 'chart.js';
 import EditorTabs from '../components/common/EditorTabs';
 import { RootState, AppDispatch } from '../store';
 import {
@@ -27,16 +15,57 @@ import {
 } from '../store/slices/analyticsSlice';
 import styles from './Analytics.module.css';
 
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement
+// Lazy-loaded chart components to reduce bundle size
+const LazyPieChart = React.lazy(async () => {
+  const [{ Pie }, chartjsModule] = await Promise.all([
+    import('react-chartjs-2'),
+    import('chart.js')
+  ]);
+  
+  // Register Chart.js components when actually needed
+  const {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    ArcElement,
+  } = chartjsModule;
+  
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    ArcElement
+  );
+  
+  return { default: Pie };
+});
+
+const LazyLineChart = React.lazy(async () => {
+  const { Line } = await import('react-chartjs-2');
+  return { default: Line };
+});
+
+// Loading skeleton for charts
+const ChartLoadingSkeleton: React.FC = () => (
+  <div className={styles.chartSkeleton}>
+    <div className={styles.skeletonPulse}>
+      <div className={styles.skeletonChart}></div>
+      <div className={styles.skeletonLegend}>
+        <div className={styles.skeletonLegendItem}></div>
+        <div className={styles.skeletonLegendItem}></div>
+        <div className={styles.skeletonLegendItem}></div>
+      </div>
+    </div>
+  </div>
 );
 
 const Analytics: React.FC = () => {
@@ -385,14 +414,18 @@ const Analytics: React.FC = () => {
         <div className={styles.chartContainer}>
           <h3>Time by Project</h3>
           <div className={styles.chartWrapper}>
-            <Pie data={projectTimeData} options={pieChartOptions} />
+            <Suspense fallback={<ChartLoadingSkeleton />}>
+              <LazyPieChart data={projectTimeData} options={pieChartOptions} />
+            </Suspense>
           </div>
         </div>
 
         <div className={styles.chartContainer}>
           <h3>Productivity Trend</h3>
           <div className={styles.chartWrapper}>
-            <Line data={productivityTrendData} options={chartOptions} />
+            <Suspense fallback={<ChartLoadingSkeleton />}>
+              <LazyLineChart data={productivityTrendData} options={chartOptions} />
+            </Suspense>
           </div>
         </div>
       </div>
@@ -428,7 +461,9 @@ const Analytics: React.FC = () => {
         <div className={`${styles.chartContainer} ${styles.fullWidth}`}>
           <h3>Productivity & Focus Trends</h3>
           <div className={`${styles.chartWrapper} ${styles.large}`}>
-            <Line data={productivityTrendData} options={chartOptions} />
+            <Suspense fallback={<ChartLoadingSkeleton />}>
+              <LazyLineChart data={productivityTrendData} options={chartOptions} />
+            </Suspense>
           </div>
         </div>
       </div>

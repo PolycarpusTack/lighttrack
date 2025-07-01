@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { startActivity, stopActivity, pauseActivity, resumeActivity } from '../../store/slices/activitySlice';
 import { formatDuration } from '@shared/utils/time';
@@ -9,27 +9,37 @@ const CurrentActivity: React.FC = () => {
   const dispatch = useAppDispatch();
   const { current } = useAppSelector(state => state.activities);
   const { projects } = useAppSelector(state => state.projects);
-  const [duration, setDuration] = useState(0);
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
   const [activityName, setActivityName] = useState('');
   const [selectedProjectId, setSelectedProjectId] = useState('default');
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Calculate duration on-demand without storing in state
+  const currentDuration = useMemo(() => {
+    if (!current) return 0;
+    
+    if (current.isPaused) {
+      // For paused activities, show duration up to pause time
+      const pauseTime = current.pauseStartTime ? new Date(current.pauseStartTime).getTime() : Date.now();
+      return pauseTime - new Date(current.startTime).getTime() - current.pausedDuration;
+    } else {
+      // For active activities, calculate elapsed time using lastUpdate for smooth feel
+      return lastUpdate - new Date(current.startTime).getTime() - current.pausedDuration;
+    }
+  }, [current, lastUpdate]);
+
   useEffect(() => {
     if (current && !current.isPaused) {
-      const updateTimer = () => {
-        const elapsed = Date.now() - new Date(current.startTime).getTime() - current.pausedDuration;
-        setDuration(elapsed);
-      };
-      
-      // Update immediately
-      updateTimer();
-      
-      // Then update every 100ms for smooth display
-      intervalRef.current = setInterval(updateTimer, 100);
-    } else if (current && current.isPaused) {
-      // Keep showing the paused duration
-      const elapsed = new Date(current.pauseStartTime || Date.now()).getTime() - new Date(current.startTime).getTime() - current.pausedDuration;
-      setDuration(elapsed);
+      // Update only once per second instead of 10 times per second
+      intervalRef.current = setInterval(() => {
+        setLastUpdate(Date.now());
+      }, 1000);
+    } else {
+      // Clear timer when paused or stopped
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     }
     
     return () => {
@@ -38,7 +48,7 @@ const CurrentActivity: React.FC = () => {
         intervalRef.current = null;
       }
     };
-  }, [current]);
+  }, [current?.isPaused, current?.id]);
 
   const handleStartStop = () => {
     if (current) {
@@ -144,7 +154,7 @@ const CurrentActivity: React.FC = () => {
       </div>
       
       <div className={styles.activityTimer}>
-        {formatDuration(duration, 'long')}
+        {formatDuration(currentDuration, 'long')}
         {current.isPaused && <span className={styles.pausedIndicator}>(Paused)</span>}
       </div>
       

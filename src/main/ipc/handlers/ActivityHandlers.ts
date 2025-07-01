@@ -54,6 +54,14 @@ export class ActivityHandlers {
         handler: this.getFilteredActivities.bind(this)
       },
       {
+        channel: 'activity:getFilteredPaginated',
+        handler: this.getFilteredActivitiesPaginated.bind(this)
+      },
+      {
+        channel: 'activity:getRecent',
+        handler: this.getRecentActivities.bind(this)
+      },
+      {
         channel: 'activity:add',
         handler: this.addActivity.bind(this),
         validator: (args) => args[0]?.name && typeof args[0].name === 'string'
@@ -214,6 +222,36 @@ export class ActivityHandlers {
       return createResponse(activities);
     } catch (error) {
       const message = 'Failed to get filtered activities';
+      ipcLogger.error(message, error);
+      return createErrorResponse(error instanceof Error ? error.message : message);
+    }
+  }
+
+  private async getFilteredActivitiesPaginated(event: IpcMainInvokeEvent, params: { 
+    page: number; 
+    pageSize: number; 
+    filter: ActivityFilter 
+  }) {
+    try {
+      const result = await this.activityService.getFilteredActivitiesPaginated(
+        params.filter, 
+        params.page, 
+        params.pageSize
+      );
+      return createResponse(result);
+    } catch (error) {
+      const message = 'Failed to get paginated activities';
+      ipcLogger.error(message, error);
+      return createErrorResponse(error instanceof Error ? error.message : message);
+    }
+  }
+
+  private async getRecentActivities(event: IpcMainInvokeEvent, limit: number = 50) {
+    try {
+      const activities = await this.activityService.getRecentActivities(limit);
+      return createResponse(activities);
+    } catch (error) {
+      const message = 'Failed to get recent activities';
       ipcLogger.error(message, error);
       return createErrorResponse(error instanceof Error ? error.message : message);
     }

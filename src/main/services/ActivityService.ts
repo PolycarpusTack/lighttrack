@@ -299,6 +299,59 @@ export class ActivityService extends EventEmitter {
     }
   }
 
+  async getFilteredActivitiesPaginated(
+    filter: ActivityFilter, 
+    page: number = 0, 
+    pageSize: number = 50
+  ): Promise<{
+    activities: ActivityDto[];
+    totalCount: number;
+    hasNextPage: boolean;
+  }> {
+    try {
+      // For now, implement simple pagination by getting all and slicing
+      // In production, this should be done at the database level
+      const allActivities = await this.getFilteredActivities(filter);
+      
+      const totalCount = allActivities.length;
+      const startIndex = page * pageSize;
+      const endIndex = startIndex + pageSize;
+      
+      const activities = allActivities.slice(startIndex, endIndex);
+      const hasNextPage = endIndex < totalCount;
+      
+      return {
+        activities,
+        totalCount,
+        hasNextPage
+      };
+    } catch (error) {
+      serviceLogger.error('Failed to get paginated activities:', error);
+      throw error;
+    }
+  }
+
+  async getRecentActivities(limit: number = 50): Promise<ActivityDto[]> {
+    try {
+      // Get recent activities ordered by endTime descending
+      const activities = await this.activityRepository.findAll();
+      
+      // Sort by endTime or startTime descending and limit
+      const sortedActivities = activities
+        .sort((a, b) => {
+          const aTime = a.endTime || a.startTime;
+          const bTime = b.endTime || b.startTime;
+          return new Date(bTime).getTime() - new Date(aTime).getTime();
+        })
+        .slice(0, limit);
+      
+      return ActivityMapper.toDtoArray(sortedActivities);
+    } catch (error) {
+      serviceLogger.error('Failed to get recent activities:', error);
+      throw error;
+    }
+  }
+
   async updateActivity(id: string, data: Partial<ActivityData>): Promise<ActivityDto> {
     try {
       // Handle tags separately if provided
