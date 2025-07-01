@@ -1,0 +1,57 @@
+.titleBar {
+  height: 32px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+
+.windowControls {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  -webkit-app-region: no-drag;
+}
+
+.appTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dragRegion {
+  flex: 1;
+  height: 100%;
+  -webkit-app-region: drag;
+}
+
+.windowActions {
+  display: flex;
+  -webkit-app-region: no-drag;
+}
+
+.windowButton {
+  width: 46px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.windowButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.windowButton:last-child:hover {
+  background: #e81123;
+  color: white;
+}

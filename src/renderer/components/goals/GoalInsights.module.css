@@ -1,0 +1,362 @@
+.goalInsights {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.title {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.refreshButton {
+  padding: 6px 8px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.refreshButton:hover:not(:disabled) {
+  background: var(--bg-secondary);
+  border-color: var(--text-secondary);
+}
+
+.refreshButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.refreshIcon {
+  font-size: 12px;
+  transition: transform 0.5s ease;
+}
+
+.refreshIcon.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Insights List */
+.insightsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.insightCard {
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-left-width: 4px;
+  transition: all 0.2s ease;
+}
+
+.insightCard:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.insightCard.high {
+  border-left-color: var(--color-error);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(239, 68, 68, 0.02) 100%);
+}
+
+.insightCard.medium {
+  border-left-color: var(--color-warning);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(245, 158, 11, 0.02) 100%);
+}
+
+.insightCard.low {
+  border-left-color: var(--color-success);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(34, 197, 94, 0.02) 100%);
+}
+
+.insightHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.insightMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.insightIcon {
+  font-size: 16px;
+}
+
+.insightType {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.priorityBadge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  background: rgba(var(--text-secondary-rgb), 0.1);
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+
+.timestamp {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.insightContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.insightTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.insightMessage {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.goalReference {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  font-size: 11px;
+}
+
+.goalRefLabel {
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.goalRefName {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.actionSuggestion {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(var(--color-primary-rgb), 0.05);
+  border-radius: 6px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.1);
+}
+
+.actionIcon {
+  color: var(--color-primary);
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.actionText {
+  font-size: 12px;
+  color: var(--text-primary);
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+.insightData {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+}
+
+.dataItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dataKey {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.dataValue {
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.showMore {
+  text-align: center;
+  padding: 8px;
+  color: var(--text-dim);
+  font-size: 11px;
+  border-top: 1px solid var(--border-color);
+}
+
+.moreCount {
+  font-style: italic;
+}
+
+/* Empty State */
+.emptyInsights {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-secondary);
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.emptyInsights h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.emptyInsights p {
+  margin: 0 0 16px 0;
+  font-size: 13px;
+  line-height: 1.4;
+  max-width: 300px;
+}
+
+.emptyInsights .refreshButton {
+  padding: 8px 16px;
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.emptyInsights .refreshButton:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+/* Compact Mode */
+.goalInsights.compact .insightCard {
+  padding: 12px;
+}
+
+.goalInsights.compact .insightTitle {
+  font-size: 13px;
+}
+
+.goalInsights.compact .insightMessage {
+  font-size: 12px;
+}
+
+.goalInsights.compact .goalReference,
+.goalInsights.compact .actionSuggestion,
+.goalInsights.compact .insightData {
+  padding: 6px 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .insightHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .insightMeta {
+    flex-wrap: wrap;
+  }
+  
+  .insightData {
+    grid-template-columns: 1fr;
+  }
+  
+  .actionSuggestion {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .actionIcon {
+    align-self: flex-start;
+  }
+}
+
+/* Animation for new insights */
+.insightCard {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

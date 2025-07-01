@@ -1,0 +1,166 @@
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #dee2e6;
+  background: #ffffff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #495057;
+}
+
+.navButton:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.navButton:active {
+  transform: translateY(1px);
+}
+
+.dateRange {
+  font-weight: 600;
+  color: #212529;
+  min-width: 120px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.scaleButtons {
+  display: flex;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.scaleButton {
+  padding: 8px 16px;
+  border: none;
+  background: #ffffff;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+  border-right: 1px solid #dee2e6;
+}
+
+.scaleButton:last-child {
+  border-right: none;
+}
+
+.scaleButton:hover {
+  background: #e9ecef;
+}
+
+.scaleButton.active {
+  background: #0d6efd;
+  color: #ffffff;
+}
+
+.quickActions {
+  display: flex;
+  gap: 8px;
+}
+
+.quickButton {
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  background: #ffffff;
+  color: #495057;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.quickButton:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.viewOptions {
+  display: flex;
+  gap: 8px;
+}
+
+.optionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #dee2e6;
+  background: #ffffff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #495057;
+}
+
+.optionButton:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .navigation,
+  .scaleButtons,
+  .quickActions {
+    justify-content: center;
+  }
+  
+  .dateRange {
+    min-width: auto;
+  }
+  
+  .scaleButton,
+  .quickButton {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .scaleButtons {
+    flex-direction: column;
+  }
+  
+  .scaleButton {
+    border-right: none;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .scaleButton:last-child {
+    border-bottom: none;
+  }
+}

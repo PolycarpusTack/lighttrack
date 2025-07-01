@@ -1,0 +1,71 @@
+.settingsSection {
+  margin-bottom: 32px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.sectionHeader.clickable {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sectionHeader.clickable:hover {
+  background: var(--bg-tertiary);
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.sectionTitle {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sectionDescription {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.collapseButton {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.collapseButton:hover {
+  color: var(--text-primary);
+}
+
+.collapseIcon {
+  font-size: 12px;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.collapseIcon.collapsed {
+  transform: rotate(-90deg);
+}
+
+.sectionContent {
+  padding: 24px;
+  background: var(--bg-primary);
+}

@@ -1,0 +1,47 @@
+.timeline {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.canvasContainer {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.canvas:hover {
+  cursor: pointer;
+}
+
+.selectionRect {
+  position: absolute;
+  border: 2px dashed #3f51b5;
+  background: rgba(63, 81, 181, 0.1);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .timeline {
+    border-radius: 0;
+    box-shadow: none;
+  }
+  
+  .canvas {
+    cursor: default;
+  }
+}
