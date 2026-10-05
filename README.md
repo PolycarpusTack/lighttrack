@@ -1,3 +1,5 @@
+> **Archived.** LightTrack development continues in [PolycarpusTack/LightTrack_v3](https://github.com/PolycarpusTack/LightTrack_v3). See [ADR 0002](https://github.com/PolycarpusTack/LightTrack_v3/blob/main/docs/adr/0002-adopt-lighttrack-v3-as-canonical.md) for the decision. This repository is kept for reference.
+
 # LightTrack Redesign
 
 A modern, VSCode-inspired time tracking application built with Electron, React, and TypeScript.
